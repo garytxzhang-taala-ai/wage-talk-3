@@ -12,6 +12,7 @@ import { POLICY_OPTIONS, calculateNegotiationPlan, generateChartData, CONSTANTS 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, ReferenceArea } from 'recharts'
 import Navbar from '../components/Navbar'
 import ExplainTabs from '../components/ExplainTabs'
+import AILegalAssistant from '../components/AILegalAssistant'
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState<'home' | 'explain'>('home')
@@ -185,9 +186,15 @@ function CalculatorPage({
    getRiskWarnings: () => any[]
  }) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:items-start">
-      {/* Left Panel - Controls */}
-      <div className="space-y-6">
+    <div className="space-y-6">
+      {/* Ask AI Legal Assistant - Full Width */}
+      <Card>
+        <AILegalAssistant />
+      </Card>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:items-start">
+        {/* Left Panel - Controls */}
+        <div className="space-y-6">
         <Card className="h-fit">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -374,6 +381,7 @@ function CalculatorPage({
                 )}
               </CardContent>
             </Card>
+            
           </div>
 
           {/* Right Panel - Results */}
@@ -742,6 +750,7 @@ function CalculatorPage({
             )}
             
           </div>
+      </div>
     </div>
   )
 }

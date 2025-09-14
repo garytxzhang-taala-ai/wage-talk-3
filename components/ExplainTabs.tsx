@@ -444,7 +444,8 @@ export default function ExplainTabs({
       </div>
 
       {/* Tab Content */}
-      {activeTab === 'simple' ? <SimpleExplanation /> : <CompleteExplanation />}
+      {activeTab === 'simple' && <SimpleExplanation />}
+      {activeTab === 'complete' && <CompleteExplanation />}
     </div>
   )
 }
