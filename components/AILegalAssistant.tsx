@@ -71,16 +71,49 @@ export default function AILegalAssistant() {
         throw new Error('网络请求失败')
       }
 
-      const data = await response.json()
-      
+      // 创建助手消息占位符
+      const assistantMessageId = `assistant-${Date.now()}`
       const assistantMessage: Message = {
-        id: `assistant-${Date.now()}`,
+        id: assistantMessageId,
         role: 'assistant',
-        content: data.message || '抱歉，我现在无法回答您的问题，请稍后再试。',
+        content: '',
         timestamp: new Date().toLocaleTimeString()
       }
-
+      
       setMessages(prev => [...prev, assistantMessage])
+
+      // 处理流式响应
+      const reader = response.body?.getReader()
+      const decoder = new TextDecoder()
+      
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+          
+          const chunk = decoder.decode(value)
+          const lines = chunk.split('\n')
+          
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              try {
+                const data = JSON.parse(line.slice(6))
+                if (data.content) {
+                  setMessages(prev => 
+                    prev.map(msg => 
+                      msg.id === assistantMessageId 
+                        ? { ...msg, content: msg.content + data.content }
+                        : msg
+                    )
+                  )
+                }
+              } catch (e) {
+                // 忽略解析错误
+              }
+            }
+          }
+        }
+      }
     } catch (error) {
       console.error('发送消息失败:', error)
       const errorMessage: Message = {
