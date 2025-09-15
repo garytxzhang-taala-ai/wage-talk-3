@@ -137,7 +137,7 @@ export default function AILegalAssistant() {
 
   return (
     <Card className="h-[600px] flex flex-col">
-      <CardHeader>
+      <CardHeader className="flex-shrink-0">
         <CardTitle className="flex items-center gap-2">
           <MessageSquare className="h-5 w-5" />
           AI法务助手
@@ -147,9 +147,9 @@ export default function AILegalAssistant() {
         </p>
       </CardHeader>
       
-      <CardContent className="flex-1 flex flex-col">
+      <CardContent className="flex-1 flex flex-col min-h-0">
         {/* 消息列表 */}
-        <div className="flex-1 overflow-y-auto space-y-4 mb-4 p-4 bg-gray-50 rounded-lg">
+        <div className="flex-1 overflow-y-auto space-y-4 mb-4 p-4 bg-gray-50 rounded-lg min-h-0">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -205,32 +205,34 @@ export default function AILegalAssistant() {
           <div ref={messagesEndRef} />
         </div>
         
-        {/* 输入框 */}
-        <div className="flex gap-2">
-          <Input
-            value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="请输入您的法律问题..."
-            disabled={isLoading}
-            className="flex-1"
-          />
-          <Button 
-            onClick={sendMessage} 
-            disabled={!inputMessage.trim() || isLoading}
-            size="icon"
-          >
-            {isLoading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Send className="h-4 w-4" />
-            )}
-          </Button>
-        </div>
-        
-        {/* 提示信息 */}
-        <div className="mt-2 text-xs text-gray-500">
-          💡 提示：您可以询问工资谈判策略、劳动合同条款、加班费计算、离职补偿等问题
+        {/* 输入区域 - 固定在底部 */}
+        <div className="flex-shrink-0 space-y-2">
+          <div className="flex gap-2">
+            <Input
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="请输入您的法律问题..."
+              disabled={isLoading}
+              className="flex-1"
+            />
+            <Button 
+              onClick={sendMessage} 
+              disabled={!inputMessage.trim() || isLoading}
+              size="icon"
+            >
+              {isLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Send className="h-4 w-4" />
+              )}
+            </Button>
+          </div>
+          
+          {/* 提示信息 */}
+          <div className="text-xs text-gray-500">
+            💡 提示：您可以询问工资谈判策略、劳动合同条款、加班费计算、离职补偿等问题
+          </div>
         </div>
       </CardContent>
     </Card>
