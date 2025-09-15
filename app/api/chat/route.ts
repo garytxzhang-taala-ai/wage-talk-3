@@ -1,4 +1,15 @@
+/// <reference types="node" />
 import { NextRequest, NextResponse } from 'next/server'
+
+// 声明全局process对象类型
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      DEEPSEEK_API_KEY: string
+      DEEPSEEK_BASE_URL: string
+    }
+  }
+}
 
 interface Message {
   id: string
@@ -24,8 +35,8 @@ export async function POST(request: NextRequest) {
     }
 
     // 获取环境变量
-    const apiKey = process.env.DEEPSEEK_API_KEY
-    const baseUrl = process.env.DEEPSEEK_BASE_URL
+    const apiKey = (globalThis as any).process?.env?.DEEPSEEK_API_KEY
+    const baseUrl = (globalThis as any).process?.env?.DEEPSEEK_BASE_URL
 
     if (!apiKey || !baseUrl) {
       return NextResponse.json(
