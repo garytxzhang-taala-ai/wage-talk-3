@@ -10,18 +10,12 @@ interface Message {
   id: string
   role: 'user' | 'assistant'
   content: string
-  timestamp: Date
+  timestamp: string
 }
 
 export default function AILegalAssistant() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      role: 'assistant',
-      content: '您好！我是AI法务助手，专门帮助解决各种劳动纠纷问题。您可以向我咨询工资谈判、劳动合同、加班费计算、离职补偿等相关法律问题。请问有什么可以帮助您的吗？',
-      timestamp: new Date()
-    }
-  ])
+  const [messages, setMessages] = useState<Message[]>([])
+  const [isInitialized, setIsInitialized] = useState(false)
   const [inputMessage, setInputMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -31,6 +25,19 @@ export default function AILegalAssistant() {
   }
 
   useEffect(() => {
+    // 初始化消息，避免hydration不匹配
+    if (!isInitialized) {
+      setMessages([{
+        id: 'initial-1',
+        role: 'assistant',
+        content: '您好！我是AI法务助手，专门帮助解决各种劳动纠纷问题。您可以向我咨询工资谈判、劳动合同、加班费计算、离职补偿等相关法律问题。请问有什么可以帮助您的吗？',
+        timestamp: new Date().toLocaleTimeString()
+      }])
+      setIsInitialized(true)
+    }
+  }, [isInitialized])
+
+  useEffect(() => {
     scrollToBottom()
   }, [messages])
 
@@ -38,10 +45,10 @@ export default function AILegalAssistant() {
     if (!inputMessage.trim() || isLoading) return
 
     const userMessage: Message = {
-      id: Date.now().toString(),
+      id: `user-${Date.now()}`,
       role: 'user',
       content: inputMessage,
-      timestamp: new Date()
+      timestamp: new Date().toLocaleTimeString()
     }
 
     setMessages(prev => [...prev, userMessage])
@@ -67,20 +74,20 @@ export default function AILegalAssistant() {
       const data = await response.json()
       
       const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: `assistant-${Date.now()}`,
         role: 'assistant',
         content: data.message || '抱歉，我现在无法回答您的问题，请稍后再试。',
-        timestamp: new Date()
+        timestamp: new Date().toLocaleTimeString()
       }
 
       setMessages(prev => [...prev, assistantMessage])
     } catch (error) {
       console.error('发送消息失败:', error)
       const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: `error-${Date.now()}`,
         role: 'assistant',
         content: '抱歉，发生了网络错误，请检查网络连接后重试。',
-        timestamp: new Date()
+        timestamp: new Date().toLocaleTimeString()
       }
       setMessages(prev => [...prev, errorMessage])
     } finally {
@@ -140,7 +147,7 @@ export default function AILegalAssistant() {
                   <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                 </div>
                 <p className="text-xs text-gray-500 mt-1">
-                  {message.timestamp.toLocaleTimeString()}
+                  {message.timestamp}
                 </p>
               </div>
             </div>
