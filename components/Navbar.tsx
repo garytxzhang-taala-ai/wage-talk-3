@@ -1,12 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { Calculator, BookOpen } from 'lucide-react'
+import { Calculator, BookOpen, MessageSquare } from 'lucide-react'
 import { Button } from './ui/button'
 
 interface NavbarProps {
-  currentPage: 'home' | 'explain'
-  onPageChange: (page: 'home' | 'explain') => void
+  currentPage: 'home' | 'explain' | 'ai'
+  onPageChange: (page: 'home' | 'explain' | 'ai') => void
 }
 
 export default function Navbar({ currentPage, onPageChange }: NavbarProps) {
@@ -36,6 +36,14 @@ export default function Navbar({ currentPage, onPageChange }: NavbarProps) {
             >
               <BookOpen className="h-4 w-4" />
               原理解释
+            </Button>
+            <Button
+              variant={currentPage === 'ai' ? 'default' : 'ghost'}
+              onClick={() => onPageChange('ai')}
+              className="flex items-center gap-2"
+            >
+              <MessageSquare className="h-4 w-4" />
+              AI法务助手
             </Button>
           </div>
         </div>

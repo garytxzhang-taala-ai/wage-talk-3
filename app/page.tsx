@@ -15,7 +15,7 @@ import ExplainTabs from '../components/ExplainTabs'
 import AILegalAssistant from '../components/AILegalAssistant'
 
 export default function Home() {
-  const [currentPage, setCurrentPage] = useState<'home' | 'explain'>('home')
+  const [currentPage, setCurrentPage] = useState<'home' | 'explain' | 'ai'>('home')
   const [selectedPolicy, setSelectedPolicy] = useState('strong')
   const [workerIdeal, setWorkerIdeal] = useState<number | undefined>(undefined)
   const [workerMinimum, setWorkerMinimum] = useState<number | undefined>(undefined)
@@ -122,13 +122,17 @@ export default function Home() {
           handleCalculate={handleCalculate}
           getRiskWarnings={getRiskWarnings}
         />
-         ) : (
+         ) : currentPage === 'explain' ? (
            <ExplainTabs 
           negotiationBreakdownCost={negotiationBreakdownCost}
           localMinimumWage={localMinimumWage}
           workerIdeal={workerIdeal}
           workerMinimum={workerMinimum}
         />
+         ) : (
+           <div className="max-w-4xl mx-auto">
+             <AILegalAssistant />
+           </div>
          )}
         
         {/* 项目声明 */}
@@ -187,11 +191,6 @@ function CalculatorPage({
  }) {
   return (
     <div className="space-y-6">
-      {/* Ask AI Legal Assistant - Full Width */}
-      <Card>
-        <AILegalAssistant />
-      </Card>
-      
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:items-start">
         {/* Left Panel - Controls */}
         <div className="space-y-6">

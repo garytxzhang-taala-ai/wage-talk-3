@@ -30,7 +30,7 @@ export default function AILegalAssistant() {
       setMessages([{
         id: 'initial-1',
         role: 'assistant',
-        content: '您好！我是AI法务助手，专门帮助解决各种劳动纠纷问题。您可以向我咨询工资谈判、劳动合同、加班费计算、离职补偿等相关法律问题。请问有什么可以帮助您的吗？',
+        content: '您好！我是您的AI法务助手 👋\n\n我可以帮您解决工资谈判、劳动纠纷等问题。为了给您最准确的建议，我想先了解一下：\n\n您目前遇到的是什么类型的问题呢？比如：\n• 准备工资谈判\n• 劳动合同疑问\n• 加班费争议\n• 其他劳动纠纷',
         timestamp: new Date().toLocaleTimeString()
       }])
       setIsInitialized(true)
@@ -103,7 +103,7 @@ export default function AILegalAssistant() {
   }
 
   return (
-    <Card className="h-[400px] flex flex-col">
+    <Card className="h-[600px] flex flex-col">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <MessageSquare className="h-5 w-5" />

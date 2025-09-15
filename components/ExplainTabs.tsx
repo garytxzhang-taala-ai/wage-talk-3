@@ -439,7 +439,7 @@ export default function ExplainTabs({
           className="flex-1"
         >
           <BookOpen className="h-4 w-4 mr-2" />
-          完整解释
+          详细解释
         </Button>
       </div>
 
